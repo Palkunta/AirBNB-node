@@ -12,6 +12,8 @@ import v2Router from './router/v2/index.router';
 import { genericErrorHandler } from './middlewares/error.middleware';
 import logger from './config/logger.config';
 import { attachCorrelationMiddleware } from './middlewares/correlation.middleware';
+import sequelize from './db/models/sequelize';
+
 
 //const PORT = 3000; //implicitly typed as number, because we assigned a number value to it. TypeScript can infer the type of a variable based on the value assigned to it. In this case, since we assigned the number 3000 to the constant PORT, TypeScript infers that PORT is of type number. Therefore, we don't need to explicitly declare the type of PORT as number, as it is already inferred by TypeScript.
 
@@ -47,11 +49,13 @@ app.use(genericErrorHandler); //ensures instead of default express errorHandler 
 
 //api versioning is a technique used to manage changes to an API over time. It allows developers to make changes to the API without breaking existing clients that rely on the old version of the API. By using versioning, developers can introduce new features, fix bugs, and make other changes to the API without affecting existing clients. This is typically done by including the version number in the URL of the API endpoints, such as /api/v1/ping or /api/v2/ping. This way, clients can specify which version of the API they want to use, and developers can maintain multiple versions of the API simultaneously.
 
-app.listen(serverConfig.PORT, () => {
+app.listen(serverConfig.PORT, async () => {
     logger.info(`Server is running on port ${serverConfig.PORT}...`);
     logger.info(`Press Ctrl+C to stop the server`,{name : "Something maybe..."});
+    await sequelize.authenticate(); // test the connection to the database
+    logger.info("Database connection has been established successfully..");
+   
 
-    
 });
 
 // what app.use() does ?
