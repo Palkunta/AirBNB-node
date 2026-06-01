@@ -1,5 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { createHotelService, getHotelbyIDService } from "../service/hotel.service";
+import { createHotelService, getAllHotelsService, getHotelbyIDService } from "../service/hotel.service";
+import { StatusCodes } from "http-status-codes";
+
+// import Hotel from "../db/models/hotel";
+// import logger from "../config/logger.config";
+// import { Not_FOUND_error } from "../utils/errors/app.error";
+// import { getAllHotels } from "../repositories/hotel.repository";
+
 
 
 export async function createHotelHandler( req : Request , res : Response , next : NextFunction){
@@ -9,7 +16,7 @@ export async function createHotelHandler( req : Request , res : Response , next 
 
     //2. send the response
 
-    res.status(201).json({
+    res.status(StatusCodes.CREATED).json({
         message : "Hotel created successfully..",
         data : hotelResponse,
         success : true
@@ -23,9 +30,34 @@ export async function getHotelbyIDHandler( req : Request , res : Response , next
 
     //2. send the response
 
-    res.status(200).json({
+    res.status(StatusCodes.OK).json({
         message : "Hotel found successfully..",
         data : hotelResponse,
         success : true
     })
+}
+
+export async function getAllHotelsHandler(req : Request , res : Response , next : NextFunction ){
+    
+    const hotelsResponse = await getAllHotelsService();
+
+    res.status(StatusCodes.OK).json({
+        message : "Hotels found successfully..",
+        data : hotelsResponse,
+        success : true 
+    });
+    
+}
+
+export async function deleteHotelsHandler( req : Request , res : Response , next : NextFunction){
+    
+    res.status(StatusCodes.NOT_IMPLEMENTED);
+
+}
+
+
+export async function updateHotelsHandler( req : Request , res : Response , next : NextFunction){
+    
+    res.status(StatusCodes.NOT_IMPLEMENTED);
+
 }
