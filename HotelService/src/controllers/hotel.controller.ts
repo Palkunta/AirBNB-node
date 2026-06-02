@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { createHotelService, getAllHotelsService, getHotelbyIDService } from "../service/hotel.service";
+import { createHotelService, deleteHotelsService, getAllHotelsService, getHotelbyIDService } from "../service/hotel.service";
 import { StatusCodes } from "http-status-codes";
 
 // import Hotel from "../db/models/hotel";
@@ -38,9 +38,9 @@ export async function getHotelbyIDHandler( req : Request , res : Response , next
 }
 
 export async function getAllHotelsHandler(req : Request , res : Response , next : NextFunction ){
-    
+    //get all hotels from the service layer
     const hotelsResponse = await getAllHotelsService();
-
+    //send the response
     res.status(StatusCodes.OK).json({
         message : "Hotels found successfully..",
         data : hotelsResponse,
@@ -49,10 +49,18 @@ export async function getAllHotelsHandler(req : Request , res : Response , next 
     
 }
 
-export async function deleteHotelsHandler( req : Request , res : Response , next : NextFunction){
+export async function deleteHotelsHandler( req : Request , res : Response , next : NextFunction){//soft-delete
     
-    res.status(StatusCodes.NOT_IMPLEMENTED);
+    //get all hotels from the service layer
 
+    const hotelsResponse = await deleteHotelsService(Number(req.params.id));
+
+    //send the response
+    res.status(StatusCodes.OK).json({
+        message : "Hotel deleted successfully..",
+        data : hotelsResponse,
+        success : true 
+    });
 }
 
 
